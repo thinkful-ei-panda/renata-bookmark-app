@@ -1,0 +1,234 @@
+*{
+    box-sizing: border-box;
+  }
+  
+  html{
+    background-color: #222629;
+  }
+  
+  .container{
+    max-width: 768px;
+    margin: auto;
+    background-color: #57ba98;
+  }
+  
+  body
+  {
+    padding-top: 1rem;
+    font-family: 'PT Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+  
+  main{
+    background-color: #f9f9fa;
+    border-radius: 6px;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 3rem;
+    color: #ffffff;
+  }
+  
+  input{
+    border-radius: 3px;
+    border: solid black 1px;
+    border-style: solid;
+  }
+  
+  textarea{
+    border-radius: 3px;
+    border: solid black 1px;
+  }
+  
+  button{
+    border-radius: 3px;
+    border-style: none;
+  }
+  
+  .js-new-item, .submit-rating{
+    width: 4rem;
+    height: 2rem;
+  }
+  
+  .js-new-item{
+    margin-left: 2rem;
+  }
+  
+  #cancel-item{
+    border-radius: 3px;
+    border-style: none;
+    width: 5rem;
+    height: 2rem;
+  }
+  
+  #save-item{
+    width: 5rem;
+  }
+  
+  #bookmark-rating{
+    height: 2rem;
+    margin: 0 .3rem;
+    border-radius: 3px;
+  }
+  
+  .bookmark-rating-form label{
+    font-size: 18px;
+  }
+  
+  .view-details, .hide-details{
+    border-radius: 3px;
+    border-style: none;
+    margin-left: 2rem;
+    margin-top: .5rem;
+    width: 7rem;
+    height: 1.5rem;
+  }
+  
+  a.make-button{
+    margin-right: 2rem;
+    display: block;
+    width: 4.9rem;
+  }
+  
+  .make-button{
+    color: #fff;
+    background-color: rgba(69, 67, 131, 0.884);
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    cursor: default;
+    text-decoration: none;
+  }
+  
+  ul{
+    list-style-type: none;
+    padding-left: 0px;
+    padding-bottom: 1rem;
+  }
+  
+  li{
+    margin-bottom: 2rem;
+    padding-left: 3rem;
+  }
+  
+  
+  .bookmark-rating-form{
+    padding-right: 2rem;
+  }
+  
+  #new-bookmark-rating{
+    border-radius: 3px;
+  }
+  
+  p{
+    margin: 0px;
+  }
+  
+  .flex{
+    display: flex;
+  }
+  
+  .controls{
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+  }
+  
+  .site-link-container{
+    flex-direction: row-reverse;
+  }
+  
+  .error-container p{
+    background-color: #FFD2D8;
+    margin: 1rem 2rem;
+    border-radius: 3px;
+  }
+  
+  .bookmark-description, .bookmark-rating{
+    padding-left: 2rem;
+  }
+  .description-container{
+    padding-left: 2rem;
+    padding-top: .3rem;
+  }
+  
+  .checkbox{
+    margin-right: 1rem;
+  }
+  
+  textarea{
+    resize: none;
+  }
+  
+  .left-form, .right-form{
+    padding: 0.25rem 2rem;
+    padding-top: 0;
+  }
+  
+  .left-form input, left-form label{
+    width: 100%;
+    flex-grow: 1;
+  }
+  
+  .right-form select, .right-form textarea, .right-form label{
+    width: 100%;
+    flex-grow: 1;
+  }
+  
+  .button-container{
+    justify-content: center;
+    padding-bottom: 1rem;
+  }
+  
+  .button-container button{
+    margin: 0 .5rem;
+  }
+  
+  .new-bookmark-form{
+    margin: 3px;
+  }
+  
+  .delete-bookmarks button{
+    width: 4rem;
+    height: 1.5rem;
+  }
+  
+  .delete-controls button{
+    color: #383d41;
+    background-color: #e2e3e5;
+    border: 1px solid;
+    border-color: #d6d8db;
+  }
+  
+  .delete-controls{
+    justify-content: space-between;
+    margin: 1rem;
+    margin-bottom: 0;
+    color: #004085;
+    background-color: #cce5ff;
+    border-radius: 3px;
+    border-color: #b8daff;
+    padding: .75rem 1.25rem;
+  }
+  
+    /* styles for medium mobile users */
+  @media (min-width: 720px){
+  .left-form, .right-form {
+    padding: 0.2rem;
+    padding-top: 0;
+  }
+  }
+  
+    /* styles for big mobile users */
+  @media (min-width: 800px){
+  .left-form, .right-form {
+    padding: 0.2rem;
+    padding-top: 0;
+  }
+  }
