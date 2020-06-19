@@ -38,7 +38,7 @@ API: [Here](https://thinkful-list-API.herokuapp.com/renata/bookmarks)
 
 ## Links
 
-* Repo: [Github - Bookmark App](https://github.com/thinkful-ei-panda/renata-bookmarks-app)
+* Repo: [Github - Bookmark App](https://github.com/thinkful-ei-panda/renata-bookmark-app)
 * Live: [Bookmark App](https://thinkful-ei-panda.github.io/renata-bookmark-app/)
 * Gist: [Gist - Bookmark App](https://gist.github.com/Seraphyne/fb17b0484af9f3de60a67d3f2a018e60)
 
