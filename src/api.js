@@ -1,4 +1,4 @@
-const BASE_URL  = `https://thinkful-list-API.herokuapp.com/renata/bookmarks`;
+const BASE_URL  = 'https://thinkful-list-API.herokuapp.com/renata/bookmarks';
 
 const validateBody = function (input) {
 
@@ -33,6 +33,7 @@ const validateBody = function (input) {
       }
       break;
     case 'rating':
+      // eslint-disable-next-line no-case-declarations
       const num = Number.parseInt(input.rating, 10);
       if (num >= 1 && num <= 5) {
         validInput.rating = num;

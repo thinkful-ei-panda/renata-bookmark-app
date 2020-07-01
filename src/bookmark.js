@@ -27,13 +27,23 @@ const populate = function () {
           selected    : false,
         });
       });
-
-      this.bookmarks = newState;
+      bookmarks = newState;
     })
     // eslint-disable-next-line no-unused-vars
     .catch((err) => {
-      // console.log(err);
+      console.log('Something went wrong!');
+      const uiErrorHTML = uiError();
+      $('#errors-div').html(uiErrorHTML);
     });
+};
+
+const uiError = function(){
+  let err = `
+    <div>
+    <p>Something went wrong!</p>
+    </div>
+  `;
+  return err; 
 };
 
 const render = function() {
@@ -69,7 +79,9 @@ const render = function() {
     renderDelete(filteredState);
     break;
   default:
-    renderInitial(filteredState);
+    // eslint-disable-next-line no-case-declarations
+    const view = renderInitial(filteredState);
+    $('main').html(view);
     break;
   }
 };
@@ -110,7 +122,8 @@ const renderInitial = function (filteredState) {
 
   view += generateListHtml(filteredState.bookmarks);
 
-  $('main').html(view);
+  return view;
+
 };
 
 const renderAdd = function (filteredState) {
@@ -278,15 +291,15 @@ const generateAddViewHtml = function (){
   return `<form action="" class="new-bookmark-form">
     <div class="flex form-container">
       <div class="left-form">
-        <label for="bookmark-title">Title</label>
-        <input type="text" name="title" id="new-bookmark-title">
-        <label for="bookmark-name">URL</label>
-        <input type="text" name="url" id="new-bookmark-url">
+        <label for="new-bookmark-title">Title</label>
+        <input type="text" name="title" id="new-bookmark-title" required>
+        <label for="new-bookmark-url">URL</label>
+        <input type="text" name="url" id="new-bookmark-url" required>
      </div>
      <div class="right-form">
-        <label for="bookmark-title">Description</label>
-        <textarea type="text" name="description" id="new-bookmark-description"></textarea>
-        <label for="bookmark-rating">Rating</label>
+        <label for="new-bookmark-description">Description</label>
+        <textarea type="text" name="description" id="new-bookmark-description" required></textarea>
+        <label for="new-bookmark-rating">Rating</label>
         <select name="" id="new-bookmark-rating">
             <option value="0"></option>
             <option value="1">★☆☆☆☆</option>
