@@ -45,4 +45,7 @@ API: [Here](https://thinkful-list-API.herokuapp.com/renata/bookmarks)
 
 ## Screenshot
 
-![Bookmark App]()
+![Landing Page](../images/first-loading.jpg)
+![Details](../images/details.jpg)
+![Create a bookmark](../images/create-bkm.jpg)
+
