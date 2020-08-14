@@ -1,349 +1,272 @@
-import API from './api.js';
+import store from './store.js';
+import api from './api.js';
 
-const fullStar  = '&starf;';
-const emptyStar = '&star;';
-  
-let view = 'initial';
-let errors = [];
-let minRating = 0;
-let bookmarks = [];
-
-const populate = function () {
-
-  return API.getAllBookmarks()
-    .then((results) => {
-
-      const newState = [];
-
-      results.forEach(bookmark => {
-
-        newState.push({
-          id          : bookmark.id,
-          title       : bookmark.title,
-          url         : bookmark.url,
-          description : bookmark.desc,
-          rating      : bookmark.rating,
-          expanded    : false,
-          selected    : false,
-        });
-      });
-      bookmarks = newState;
-    })
-    // eslint-disable-next-line no-unused-vars
-    .catch((err) => {
-      console.log('Something went wrong!');
-      const uiErrorHTML = uiError();
-      $('#errors-div').html(uiErrorHTML);
-    });
+const render = function (generatingFunction) {
+  $('main').html(generatingFunction);
 };
 
-const uiError = function(){
-  let err = `
-    <div>
-    <p>Something went wrong!</p>
+const generateStarRatingElement = function (bookmark) {
+  let ratingImageString = '<div class="star-rating flex-item">';
+
+  for(let i=0; i<bookmark.rating; i++) {
+    ratingImageString += '<img class="star filled-star" alt="filled rating star" src="./images/star.png" />';
+  }
+
+  for(let i=0; i<5-bookmark.rating; i++) {
+    ratingImageString += '<img class="star unfilled-star" alt="unfilled rating star" src="./images/no-star.png" />';
+  }
+
+  ratingImageString += '</div>';
+  return ratingImageString;
+};
+
+const generateBookmarkElement = function (bookmark) {
+  let bookmarkElementString = `
+    <div class="bookmark-element" data-id="${bookmark.id}" tabindex="0">
+      <div class="bookmark-section">
+        <div>Title:</div>
+        <div>${bookmark.title}</div>
+      </div>  
+      <div class="bookmark-rating bookmark-section">
+        <div class="flex-item">Rating:</div>
+        ${generateStarRatingElement(bookmark)}
+      </div>
+  `;
+
+  if(bookmark.expanded) {
+    bookmarkElementString += `
+      <div class="bookmark-section">
+        <div>Description:</div>
+        <div>${bookmark.desc}</div>
+      </div>
+      <div class="bookmark-section">
+        <div class="bookmark-link" onclick="event.stopPropagation()"><a href="${bookmark.url}" target="_blank">Visit Site</a></div>
+      </div>
+      <div class="bookmark-buttons bookmark-section">
+        <button class="flex-item delete-button">Delete</button>
+      </div>
+    `;
+  }
+
+  else {
+    bookmarkElementString += `
+      <span class="expand-prompt">(Click for details)</span></button>`;
+  }
+
+  bookmarkElementString += `
     </div>
   `;
-  return err; 
+  return bookmarkElementString;
 };
 
-const render = function() {
-
-  const getFilteredState = function() {
-
-    const filtered = {
-      view      : view,
-      errors    : errors,
-      minRating : minRating,
-    };
-
-    filtered.bookmarks = bookmarks.filter((bookmark) => {
-
-      if (minRating === 0) {
-        return true;
-      }
-      if (parseInt(bookmark.rating, 10) >= minRating) {
-        return true;
-      }
-      return false;
-    });
-    return filtered;
-  };
-
-  const filteredState = getFilteredState();
-
-  switch (view) {
-  case 'add':
-    renderAdd(filteredState);
-    break;
-  case 'delete':
-    renderDelete(filteredState);
-    break;
-  default:
-    // eslint-disable-next-line no-case-declarations
-    const view = renderInitial(filteredState);
-    $('main').html(view);
-    break;
-  }
+const generateBookmarkListString = function (bookmarkList) {
+  let list = bookmarkList.filter(bookmark => bookmark.rating >= store.state.filter);
+  list = list.map(bookmark => generateBookmarkElement(bookmark));
+  return list.join('');
 };
 
-const renderInitial = function (filteredState) {
+const generateMainView = function () {
+  return `
+  <div id="main-wrapper" class='main-wrapper'>
 
-  let view = '';
-  view += `
-      <section class="controls flex">
-        <form action="" class="new-bookmark-button">
-          <button class="js-new-item">New</button>
-        </form>
-        <div class="rating-container">
-          <form action="" class="bookmark-rating-form">
-            <label for="bookmark-rating">Rating</label>
-            <select name="" id="bookmark-rating">
-              <option value="0"></option>
-              <option value="1">★☆☆☆☆</option>
-              <option value="2">★★☆☆☆</option>
-              <option value="3">★★★☆☆</option>
-              <option value="4">★★★★☆</option>
-              <option value="5">★★★★★</option>
-            </select>
-            <button class="submit-rating">Filter</button>
-          </form>
+    <button id="create-button" alt="Create New Bookmark" name="create-button">Add New</button>
+    <div class="filter-results">
+      <label for="filter-results">Filter results</label>
+      <select name="filter-results" id="filter-results">
+        <option value="0"></option>
+        <option value="1">★☆☆☆☆</option>
+        <option value="2">★★☆☆☆</option>
+        <option value="3">★★★☆☆</option>
+        <option value="4">★★★★☆</option>
+        <option value="5">★★★★★</option>
+      </select>
+    </div>
+    ${generateBookmarkListString(store.bookmarks)}
+  </div>
+  `;
+};
+
+const generateCreateView = function () {
+  return `
+    <div id="create-view" class="create-view">
+      <h2>Create a new bookmark</h2>
+      <form id="create-form" action="" method="post">
+        <div class="form-field">
+          <label for="title">Title:</label>
+          <input type="text" name="title" id="title" required>
+        </div>      
+        <div class="form-field">
+          <label for="url">URL:</label>
+          <input type="url" name="url" id="url" value="https://" required>
         </div>
-      </section>
-    `;
-
-  if (errors.length > 0) {
-
-    view += '<div class="error-container">';
-
-    view += errors.map((msg) => { return `<p>${msg}</p>`; }).join('');
-
-    view += '</div>';
-  }
-
-  view += generateListHtml(filteredState.bookmarks);
-
-  return view;
-
-};
-
-const renderAdd = function (filteredState) {
-
-  let view = '';
-
-  view += `
-        <section class="controls flex">
-          <form action="" class="new-bookmark-button">
-          <button class="js-new-item">New</button>
-        </form>
-        <div class="rating-container">
-          <form action="" class="bookmark-rating-form">
-            <label for="bookmark-rating">Rating</label>
-            <select name="" id="bookmark-rating">
-              <option value="0"></option>
-              <option value="1">★☆☆☆☆</option>
-              <option value="2">★★☆☆☆</option>
-              <option value="3">★★★☆☆</option>
-              <option value="4">★★★★☆</option>
-              <option value="5">★★★★★</option>
-            </select>
-            <button class="submit-rating">Filter</button>
-          </form>
+        <div class="form-field">
+          <label for="description">Description:</label>
+          <textarea name="description" id="description" placeholder="(optional)"></textarea>
         </div>
-        </section>`;
-
-  view += generateErrorHtml(filteredState.errors);
-
-
-  view += generateAddViewHtml();
-
-
-  view += generateListHtml(filteredState.bookmarks);
-
-  $('main').html(view);
-
-  // console.log('Add View', filteredState);
+        <div class="form-field">
+          <label for="rating">Rating:</label>
+          <select name="rating" id="rating" required>      
+          <option value="0"></option>
+          <option value="1">★☆☆☆☆</option>
+          <option value="2">★★☆☆☆</option>
+          <option value="3">★★★☆☆</option>
+          <option value="4">★★★★☆</option>
+          <option value="5">★★★★★</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <button class="delete-button" type="image" id="cancel-button" alt="Cancel Button" formnovalidate>Cancel</button>
+          <button class="delete-button" type="image" id="save-button" alt="Save Button">Save</button>
+        </div>
+      </form>
+    </div>
+  `;
 };
 
-const renderDelete = function (filteredState) {
+const generateEditView = function (bookmark) {
+  return `
+    <div id="edit-view" class="bookmark-element" data-id="${bookmark.id}">
+      <h2>Create a new bookmark</h2>
+      <form id="edit-form" action="" method="post">
+        <div class="form-field">
+          <label for="title">Title:</label>
+          <input type="text" name="title" id="title" value="${bookmark.title}" required>
+        </div>      
+        <div class="form-field">
+          <label for="url">URL:</label>
+          <input type="url" name="url" id="url" value="${bookmark.url}" required>
+        </div>
+        <div class="form-field">
+          <label for="description">Description:</label>
+          <textarea name="description" id="description" value="${bookmark.desc}"></textarea>
+        </div>
+        <div class="form-field">
+          <label for="rating">Rating:</label>
+          <select name="rating" id="rating" value="${bookmark.rating}" required>      
+            <option value="">Select one</option>
+            <option value="1">1-star</option>
+            <option value="2">2-stars</option>
+            <option value="3">3-stars</option>
+            <option value="4">4-stars</option>
+            <option value="5">5-stars</option>
+          </select>
+        </div>
+        <div class="form-field button-section">
+          <input type="image" id="cancel-button" src="./images/cancel-button.png" alt="Cancel Button" formnovalidate>
+          <input type="image" id="save-button" src="./images/save-button.png" alt="Save Button">
+        </div>
+      </form>
+    </div>
+  `;
+};
 
-  let count = 0;
+const getBookmarkIdFromElement = function (element) {
+  return $(element)
+    .closest('.bookmark-element')
+    .data('id');
+};
 
-  filteredState.bookmarks.forEach((b) => {
+const handleRatingFilterChange = function () {
+  $('main').on('change', '#filter-results', event => {
+    let filterSelection = parseInt($(event.target).val());
+    store.state.filter = filterSelection;
+    render(generateMainView);
+  });
+};
 
-    if (b.selected === true) {
-      count++;
-    }
+const handleExpandToggleClick = function () {
+  $('main').on('click', '.bookmark-element', event => {
+    let id = getBookmarkIdFromElement($(event.target));
+    let currentBookmark = store.bookmarks.find(bookmark => bookmark.id === id);
+    currentBookmark.expanded = !currentBookmark.expanded;
+    render(generateMainView);
   });
 
-  const countString = count === 1 ? `${count} item selected` : `${count} items selected`;
-
-  let view = '';
-
-  view += `
-    <section class="controls flex">
-      <form action="" class="new-bookmark-button">
-        <button class="js-new-item">New</button>
-      </form>
-      <div class="rating-container">
-        <form action="" class="bookmark-rating-form">
-          <label for="bookmark-rating">Rating</label>
-          <select name="" id="bookmark-rating">
-            <option value="0"></option>
-            <option value="1">★☆☆☆☆</option>
-            <option value="2">★★☆☆☆</option>
-            <option value="3">★★★☆☆</option>
-            <option value="4">★★★★☆</option>
-            <option value="5">★★★★★</option>
-          </select>
-          <button class="submit-rating">Filter</button>
-        </form>
-      </div>
-    </section>
-  `;
-
-  view += generateErrorHtml(filteredState.errors);
-
-  view += '<section class="delete-controls flex">';
-
-  view += countString;
-
-  view += `<form action="" class="delete-bookmarks">
-      <button type="submit">Delete</button>
-    </form>
-  </section>`;
-
-  view += generateListHtml(filteredState.bookmarks);
-
-  $('main').html(view);
+  $('main').on('keypress', '.bookmark-element', event => {
+    let id = getBookmarkIdFromElement($(event.target));
+    let currentBookmark = store.bookmarks.find(bookmark => bookmark.id === id);
+    currentBookmark.expanded = !currentBookmark.expanded;
+    render(generateMainView);
+  });
 };
 
-const generateErrorHtml = function (errors){
-
-  let view = '<section class="error-container">';
-
-  view += errors.map(err => {
-    return `<p class = "error message" aria-role="error-message">${err}</p>`;
-  }).join('');
-
-  view += '</section>';
-  return view;
+const handleEditButtonClick = function () {
+  $('.bookmark-element').on('click', '.edit-button', event => {
+    store.state.editing = true;
+    const id = $(event.currentTarget).closest('.bookmark-element').data('id');
+    render(generateEditView);
+  });
 };
 
-const generateListHtml = function (bookmarks){
-
-  let html = '';
-
-  html += '<section class="list">';
-
-  html += '<ul class="bookmarks-list">';
-
-  html += bookmarks.map(bookmark => {
-
-    let item = '<li>';
-
-    if (bookmark.selected === true){
-      item += `
-        <div>
-          <input type="checkbox" id="bookmark-${bookmark.id}" class='checkbox' data-cuid="${bookmark.id}" checked>
-          <label for="bookmark-${bookmark.id}"><strong>${bookmark.title}</strong></label>
-        </div>
-        <div class="bookmark-rating">
-          ${fullStar.repeat(bookmark.rating) + emptyStar.repeat(5 - bookmark.rating)}
-        </div>`;
-    } else {
-      item += `
-        <div>
-          <input type="checkbox" id="bookmark-${bookmark.id}" class='checkbox' data-cuid="${bookmark.id}">
-          <label for="bookmark-${bookmark.id}"><strong>${bookmark.title}</strong></label>
-        </div>
-        <div class="bookmark-rating">
-          ${fullStar.repeat(bookmark.rating) + emptyStar.repeat(5 - bookmark.rating)}
-        </div>`;
-    }
-
-    if (bookmark.expanded === true) {
-      item += `
-          <input type="button" class="hide-details" value="Hide details">
-          <div class="description-container">
-            ${ bookmark.description || '' }
-            <a class="fake-button make-button" href="${bookmark.url}" target="_blank">Visit Site</a>
-          </div>
-        `;
-    }  else {
-      item += `
-          <input type="button" class="view-details" value="View details">
-        `;
-    }
-
-    item += '</li>';
-
-    return item;
-  }).join('');
-
-  html += '</ul>';
-
-  html += '</section>';
-
-  return html;
+const handleDeleteButtonClick = function () {
+  $('main').on('click', '.delete-button', event => {
+    const id = getBookmarkIdFromElement(event.target);
+    api.deleteBookmark(id)
+      .then( () => {
+        store.findAndDelete(id);
+        render(generateMainView);
+      });
+  });
+  
+  
+  $('main').on('keypress', '.delete-button', event => {
+    const id = getBookmarkIdFromElement(event.target);
+    api.deleteBookmark(id)
+      .then( () => {
+        store.findAndDelete(id);
+        render(generateMainView);
+      });
+  });
 };
 
-const generateAddViewHtml = function (){
-  return `<form action="" class="new-bookmark-form">
-    <div class="flex form-container">
-      <div class="left-form">
-        <label for="new-bookmark-title">Title</label>
-        <input type="text" name="title" id="new-bookmark-title" required>
-        <label for="new-bookmark-url">URL</label>
-        <input type="text" name="url" id="new-bookmark-url" required>
-     </div>
-     <div class="right-form">
-        <label for="new-bookmark-description">Description</label>
-        <textarea type="text" name="description" id="new-bookmark-description" required></textarea>
-        <label for="new-bookmark-rating">Rating</label>
-        <select name="" id="new-bookmark-rating">
-            <option value="0"></option>
-            <option value="1">★☆☆☆☆</option>
-            <option value="2">★★☆☆☆</option>
-            <option value="3">★★★☆☆</option>
-            <option value="4">★★★★☆</option>
-            <option value="5">★★★★★</option>
-        </select>
-      </div>
-    </div>
-    <div class="flex button-container">
-          <input type="button" id="cancel-item" value="Cancel"></input>
-          <button type="submit" id="save-item">Save</button>
-    </div>
-  </form>`;
+const handleCancelButtonClick = function () {
+  $('main').on('click', '#cancel-button', event => {
+    store.state.creating = false;
+    store.state.editing = false;
+    render(generateMainView);
+  });
 };
 
-function setView(v){
-  view = v;
-}
+const handleSaveButtonClick = function () {
 
-function setErrors(error){
-  errors = error;
-}
+  $('main').on('submit', '#create-form', event => {
+    event.preventDefault();
+    let title = $('#title').val();
+    let url = $('#url').val();
+    let desc = $('#description').val();
+    let rating = parseInt($('#rating').val());
+    let expanded = false;
 
-function setMinRatings(ratings){
-  minRating = ratings;
-}
+    let newBookmark = {title,url,desc,rating,expanded};
 
-function setBookmarks(bookmark){
-  bookmarks = bookmark;
-}
+    api.createBookmark(newBookmark)
+      .then( (data) => {
+        store.addBookmark(data);
+        render(generateMainView);
+      });
+  });
 
-function getBookmarks(){
-  return bookmarks;
-}
+};
+
+const handleCreateButtonClick = function () {
+  $('main').on('click', '#create-button', event => {
+    store.state.creating = true;
+    render(generateCreateView);
+  });
+};
+
+const bindEventListeners = function () {
+  handleRatingFilterChange();
+  handleExpandToggleClick();
+  handleCreateButtonClick();
+  handleEditButtonClick();
+  handleDeleteButtonClick();
+  handleCancelButtonClick();
+  handleSaveButtonClick();
+};
 
 export {
-  setMinRatings,
-  setBookmarks,
-  getBookmarks,
-  setView,
-  setErrors,
-  populate,
-  render,
+  generateMainView,
+  bindEventListeners,
+  render
 };
-

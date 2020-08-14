@@ -45,4 +45,4 @@ API: [Here](https://thinkful-list-API.herokuapp.com/renata/bookmarks)
 
 ## Screenshot
 
-![Bookmark App](bookmark-app.jpg)
+![Bookmark App]()

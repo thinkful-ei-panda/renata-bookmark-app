@@ -1,249 +1,195 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
 
-*{
-    box-sizing: border-box;
-  }
-  
-  html{
-    background-color: #222629;
-  }
-  
-  .container{
-    max-width: 768px;
-    margin: auto;
-    background-color: #57ba98;
-    overflow: auto;
-  }
-  
-  body
-  {
-    padding-top: 1rem;
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    line-height: 1.25;
-  }
-  
-  main{
-    background-color: #f9f9fa;
-    border-radius: 6px;
-  }
-  
-  h1 {
-    text-align: center;
-    font-size: 3rem;
-    color: #ffffff;
-  }
-  
-  input{
-    border-radius: 3px;
-    border: solid black 1px;
-    border-style: solid;
-  }
-  
-  textarea{
-    border-radius: 3px;
-    border: solid black 1px;
-  }
-  
-  button{
-    border-radius: 3px;
-    border-style: none;
-  }
-  
-  .js-new-item, .submit-rating{
-    width: 4rem;
-    height: 2rem;
-    font-family: 'Playfair Display', serif;
-  }
-  
-  .js-new-item{
-    margin-left: 2rem;
-  }
-  
-#errors-div{
-  color: white;
-  font-size: 25px;
-  text-align: center;
-  margin: 15px;
+body {
+  display: flex;
+  flex-direction: column;
+  background-color:#222629;
+  padding: 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  border: 2px solid #57ba98;
 }
 
-  #cancel-item{
-    border-radius: 3px;
-    border-style: none;
-    width: 5rem;
-    height: 2rem;
-    font-family: 'Playfair Display', serif;
+h1 {
+  text-align: center;
+  font-size: 45px;
+  color: #ffffff;
+  margin: 20px auto;
+}
+
+#create-button {
+  background-color: #57ba98;
+  font-family: 'Playfair Display', serif;
+  font-size: 30px; 
+  display: block;
+  margin: 0 auto 30px auto;
+  padding: 10px;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  border: 1px #57ba98 solid;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+#create-button img {
+  max-width: 100%;
+  margin: 0;
+  border: none;
+}
+
+textarea {
+  resize: none;
+}
+
+.filter-results{
+  color: #ffffff;
+}
+
+a{
+  color: #fff;
+  background-color: rgba(69, 67, 131, 0.884);
+  font-weight: 400;
+  text-align: center;
+  border: 1px solid transparent;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  cursor: default;
+  text-decoration: none;
+  margin-right: 2rem;
+  display: block;
+  width: 4.9rem;
+}
+
+#filter-results {
+  margin-bottom: 10px;
+}
+
+.bookmark-element {
+  border-style: solid;
+  border-color: #57ba98;
+  border-radius: 15px;
+  border-width: 1px;
+  background-color: #57ba98;
+  margin: 10px;
+  padding: 20px;
+}
+
+.bookmark-element *, #create-view * {
+  font-family: 'Playfair Display', serif;
+}
+
+.bookmark-section {
+  margin-bottom: 20px;
+  word-wrap: break-word;
+}
+
+.bookmark-buttons {
+  margin-bottom: 0;
+}
+
+.bookmark-rating {
+  display: flex;
+}
+
+.star-rating {
+  margin-left: 20px;
+}
+
+.star-rating img {
+  width: 20px;
+}
+
+.expand-prompt {
+  display: block;
+  text-align: center;
+}
+
+.delete-button {
+  background-color: #222629;
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Playfair Display', serif;
+  font-size: 25px; 
+  display: block;
+  margin: 0 auto 30px auto;
+  padding: 10px;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  border: 2px #ffffff solid;
+}
+
+.bookmark-buttons img {
+  height: 30px;
+  margin: 0;
+}
+
+#create-view {
+  text-align: center;
+  background-color: #57ba98;
+}
+
+#create-view h2 {
+  text-align: center;
+}
+
+#create-view form {
+  display: inline-block;
+  text-align: left;
+}
+
+#create-view .form-field {
+  margin-left: 20px;
+  margin-bottom: 15px;
+  vertical-align: middle;
+}
+
+#create-view input[type=text], input[type=url], textarea {
+  width: 100px;
+}
+
+
+#create-view label {
+  display: inline-block;
+  width: 100px;
+}
+
+
+#create-view .button-section {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 40px;
+}
+
+/* +++++++++++++++ MEDIUM & BIG MEDIAS +++++++++++++++++++ */
+@media all and (min-width: 600px) {
+
+  #create-view .form-field {
+    margin-left: 0;
   }
-  
-  #save-item{
-    width: 5rem;
-    font-family: 'Playfair Display', serif;
-  }
-  
-  #bookmark-rating{
-    height: 2rem;
-    margin: 0 .3rem;
-    border-radius: 3px;
-  }
-  
-  .bookmark-rating-form label{
-    font-size: 18px;
-  }
-  
-  .view-details, .hide-details{
-    border-radius: 3px;
-    border-style: none;
-    margin-left: 2rem;
-    margin-top: .5rem;
-    width: 7rem;
-    height: 1.5rem;
-  }
-  
-  a.make-button{
-    margin-right: 2rem;
-    display: block;
-    width: 4.9rem;
-  }
-  
-  .make-button{
-    color: #fff;
-    background-color: rgba(69, 67, 131, 0.884);
-    font-weight: 400;
-    text-align: center;
+  #create-view .form-field * {
     vertical-align: middle;
-    border: 1px solid transparent;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: .25rem;
-    cursor: default;
-    text-decoration: none;
   }
   
-  ul{
-    list-style-type: none;
-    padding-left: 0px;
-    padding-bottom: 1rem;
+  #create-view label {
+    display: inline-block;
+    width: 100px;
   }
   
-  li{
-    margin-bottom: 2rem;
-    padding-left: 3rem;
+  #create-view input[type=text], input[type=url], textarea {
+    width: 300px;
   }
   
-  
-  .bookmark-rating-form{
-    padding-right: 2rem;
+  #create-view textarea {
+    height: 100px;
   }
   
-  #new-bookmark-rating{
-    border-radius: 3px;
-  }
-  
-  p{
-    margin: 0px;
-  }
-  
-  .flex{
+  #create-view .button-section {
     display: flex;
+    justify-content: space-evenly;
+    margin-top: 40px;
   }
-  
-  .controls{
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1rem;
-  }
-  
-  .site-link-container{
-    flex-direction: row-reverse;
-  }
-  
-  .error-container p{
-    background-color: #FFD2D8;
-    margin: 1rem 2rem;
-    border-radius: 3px;
-  }
-  
-  .bookmark-description, .bookmark-rating{
-    padding-left: 2rem;
-  }
-  .description-container{
-    padding-left: 2rem;
-    padding-top: .3rem;
-  }
-  
-  .checkbox{
-    margin-right: 1rem;
-  }
-  
-  textarea{
-    resize: none;
-  }
-  
-  .left-form, .right-form{
-    padding: 0.25rem 2rem;
-    padding-top: 0;
-  }
-  
-  .left-form input, left-form label{
-    width: 100%;
-    flex-grow: 1;
-  }
-  
-  .right-form select, .right-form textarea, .right-form label{
-    width: 100%;
-    flex-grow: 1;
-  }
-  
-  .button-container{
-    justify-content: center;
-    padding-bottom: 1rem;
-  }
-  
-  .button-container button{
-    margin: 0 .5rem;
-  }
-  
-  .new-bookmark-form{
-    margin: 3px;
-  }
-  
-  .delete-bookmarks button{
-    width: 4rem;
-    height: 1.5rem;
-  }
-  
-  .delete-controls button{
-    color: #383d41;
-    background-color: #e2e3e5;
-    border: 1px solid;
-    border-color: #d6d8db;
-  }
-  
-  .delete-controls{
-    justify-content: space-between;
-    margin: 1rem;
-    margin-bottom: 0;
-    color: #004085;
-    background-color: #cce5ff;
-    border-radius: 3px;
-    border-color: #b8daff;
-    padding: .75rem 1.25rem;
-  }
-  
-    /* styles for medium mobile users */
-  @media (max-width: 620px){
-  .left-form, .right-form {
-    padding: 0.2rem;
-    padding-top: 0;
-  }
-  }
-  
-    /* styles for big mobile users */
-  @media (max-width: 800px){
-  .left-form, .right-form {
-    padding: 0.2rem;
-    padding-top: 0;
-  }
+}
 
-
-  }

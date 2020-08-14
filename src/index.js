@@ -1,18 +1,19 @@
-import {render, populate} from './bookmark.js';
+import {generateMainView, bindEventListeners, render} from './bookmark.js';
+import api from './api.js';
 import store from './store.js';
 
-function main(){
-  populate().then(render);
-  
-  store.handleNewItem();
-  store.handleRatingFilter();
-  store.handleCheckbox();
-  store.handleDelete();
-  store.handleSaveBookmark();
-  store.handleCancelBookmark();
-  store.handleViewDetails();
-  store.handleHideDetails();
-}
-  
+const main = function() {
+  render(generateMainView);
+  let bkm = api.getBookmarks()
+    .then(response => {
+      response.forEach(bookmark => {
+        bookmark.expanded = false;
+        store.addBookmark(bookmark);
+        render(generateMainView);
+      });
+      render(generateMainView);
+      bindEventListeners();
+    });
+};
+
 $(main);
-  
