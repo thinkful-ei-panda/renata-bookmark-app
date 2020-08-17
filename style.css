@@ -24,10 +24,10 @@ h1 {
   display: block;
   margin: 0 auto 30px auto;
   padding: 10px;
-  width: 100%;
+  width: 40%;
   height: auto;
   border-radius: 15px;
-  border: 1px #57ba98 solid;
+  border: 2px #ffffff solid;
   letter-spacing: 2px;
   font-weight: bold;
 }
@@ -38,6 +38,7 @@ textarea {
 
 .filter-results{
   color: #ffffff;
+  
 }
 
 a{
@@ -100,7 +101,7 @@ a{
   text-align: center;
 }
 
-.delete-button, .save-button, .cancel-button {
+.delete-button{
   background-color: #222629;
   text-align: center;
   color: #ffffff;
@@ -109,7 +110,22 @@ a{
   display: block;
   margin: 0 auto 30px auto;
   padding: 10px;
-  width: 100%;
+  width: 60%;
+  height: auto;
+  border-radius: 15px;
+  border: 2px #ffffff solid;
+}
+
+.cancel-button, .save-button{
+  background-color: #222629;
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Playfair Display', serif;
+  font-size: 25px; 
+  display: block;
+  margin: 0 auto 30px auto;
+  padding: 10px;
+  width: 60%;
   height: auto;
   border-radius: 15px;
   border: 2px #ffffff solid;
@@ -140,10 +156,6 @@ a{
   vertical-align: middle;
 }
 
-#create-view input[type=text], input[type=url], textarea {
-  width: 100px;
-}
-
 #create-view label {
   display: inline-block;
   width: 100px;
@@ -166,6 +178,7 @@ a{
   text-align: center;
   margin: 15px;
 }
+
 
 /* +++++++++++++++ MEDIUM & BIG MEDIAS +++++++++++++++++++ */
 @media all and (min-width: 600px) {
@@ -194,6 +207,21 @@ a{
     display: flex;
     justify-content: space-evenly;
     margin-top: 40px;
+  }
+
+  .main-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .bkm-list{
+    width: 40%;
+    margin: 0 auto 30px auto;
+  }
+
+  .filter-results{
+    margin: 0 auto 30px auto;
   }
 }
 

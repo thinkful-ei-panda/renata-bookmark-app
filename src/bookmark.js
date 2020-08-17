@@ -92,7 +92,9 @@ const generateMainView = function () {
         <option value="5">★★★★★</option>
       </select>
     </div>
+    <div class='bkm-list'>
     ${generateBookmarkListString(store.bookmarks)}
+    </div>
   </div>
   `;
 };
