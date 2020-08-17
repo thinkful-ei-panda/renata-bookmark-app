@@ -32,12 +32,6 @@ h1 {
   font-weight: bold;
 }
 
-#create-button img {
-  max-width: 100%;
-  margin: 0;
-  border: none;
-}
-
 textarea {
   resize: none;
 }
@@ -106,7 +100,7 @@ a{
   text-align: center;
 }
 
-.delete-button {
+.delete-button, .save-button, .cancel-button {
   background-color: #222629;
   text-align: center;
   color: #ffffff;
@@ -150,12 +144,10 @@ a{
   width: 100px;
 }
 
-
 #create-view label {
   display: inline-block;
   width: 100px;
 }
-
 
 #create-view .button-section {
   display: flex;
@@ -166,6 +158,13 @@ a{
 .required{
   font-size: 15px;
   text-align: center;
+}
+
+#errors-div{
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  margin: 15px;
 }
 
 /* +++++++++++++++ MEDIUM & BIG MEDIAS +++++++++++++++++++ */

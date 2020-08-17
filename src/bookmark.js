@@ -5,6 +5,18 @@ const render = function (generatingFunction) {
   $('main').html(generatingFunction);
 };
 
+const showUIError = function(message){
+  let err = `
+  <div>
+  <p>${message}</p>
+  </div>`;
+  $('#errors-div').html(err);
+};
+
+function clearUIError(){
+  $('#errors-div').html('');
+}
+
 const generateStarRatingElement = function (bookmark) {
   let ratingImageString = '<div class="star-rating flex-item">';
 
@@ -68,12 +80,11 @@ const generateBookmarkListString = function (bookmarkList) {
 const generateMainView = function () {
   return `
   <div id="main-wrapper" class='main-wrapper'>
-
-    <button id="create-button" alt="Create New Bookmark" name="create-button">Add New</button>
+    <button id="create-button" name="create-button">Add New</button>
     <div class="filter-results">
       <label for="filter-results">Filter results</label>
       <select name="filter-results" id="filter-results">
-        <option value="0"></option>
+        <option value=""></option>
         <option value="1">★☆☆☆☆</option>
         <option value="2">★★☆☆☆</option>
         <option value="3">★★★☆☆</option>
@@ -88,25 +99,26 @@ const generateMainView = function () {
 
 const generateCreateView = function () {
   return `
+  <legend>
     <div id="create-view" class="create-view">
       <h2>Create a new bookmark</h2>
       <form id="create-form" action="" method="post">
         <div class="form-field">
-          <label for="title">Title: *</label>
-          <input type="text" name="title" id="title" required>
+          <label for="title">Title:</label>
+          <input type="text" name="title" id="title">
         </div>      
         <div class="form-field">
-          <label for="url">URL: *</label>
-          <input type="url" name="url" id="url" value="https://" required>
+          <label for="url">URL:</label>
+          <input type="text" name="url" id="url" value="https://">
         </div>
         <div class="form-field">
           <label for="description">Description:</label>
           <textarea name="description" id="description" placeholder="(optional)"></textarea>
         </div>
         <div class="form-field">
-          <label for="rating">Rating: *</label>
-          <select name="rating" id="rating" required>      
-          <option value="0"></option>
+          <label for="rating">Rating:</label>
+          <select name="rating" id="rating">      
+          <option value=""></option>
           <option value="1">★☆☆☆☆</option>
           <option value="2">★★☆☆☆</option>
           <option value="3">★★★☆☆</option>
@@ -114,20 +126,19 @@ const generateCreateView = function () {
           <option value="5">★★★★★</option>
           </select>
         </div>
-        <div>
-        <p class='required'>All the fields with * are required</p>
-        </div>
         <div class="form-field">
-          <button class="delete-button" type="image" id="cancel-button" alt="Cancel Button" formnovalidate>Cancel</button>
-          <button class="delete-button" type="image" id="save-button" alt="Save Button">Save</button>
+          <button class="cancel-button" type="button" id="cancel-button">Cancel</button>
+          <button class="save-button" type="submit" id="save-button">Save</button>
         </div>
       </form>
     </div>
+    </legend>
   `;
 };
 
 const generateEditView = function (bookmark) {
   return `
+  <legend>
     <div id="edit-view" class="bookmark-element" data-id="${bookmark.id}">
       <h2>Create a new bookmark</h2>
       <form id="edit-form" action="" method="post">
@@ -155,11 +166,12 @@ const generateEditView = function (bookmark) {
           </select>
         </div>
         <div class="form-field button-section">
-          <input type="image" id="cancel-button" src="./images/cancel-button.png" alt="Cancel Button" formnovalidate>
-          <input type="image" id="save-button" src="./images/save-button.png" alt="Save Button">
+          <input class="cancel-button" type="" id="cancel-button">
+          <input class="save-button" type="submit" id="save-button">
         </div>
       </form>
     </div>
+    </legend>
   `;
 };
 
@@ -204,26 +216,37 @@ const handleEditButtonClick = function () {
 const handleDeleteButtonClick = function () {
   $('main').on('click', '.delete-button', event => {
     const id = getBookmarkIdFromElement(event.target);
+    
+    clearUIError();
+    
     api.deleteBookmark(id)
-      .then( () => {
+      .then(() => {
         store.findAndDelete(id);
         render(generateMainView);
+      }).catch((err) => {
+        showUIError(err.message);
       });
   });
   
   
   $('main').on('keypress', '.delete-button', event => {
     const id = getBookmarkIdFromElement(event.target);
+    
+    clearUIError();
+    
     api.deleteBookmark(id)
       .then( () => {
         store.findAndDelete(id);
         render(generateMainView);
+      }).catch((err) => {
+        showUIError(err.message);
       });
   });
 };
 
 const handleCancelButtonClick = function () {
   $('main').on('click', '#cancel-button', event => {
+    clearUIError();
     store.state.creating = false;
     store.state.editing = false;
     render(generateMainView);
@@ -240,12 +263,16 @@ const handleSaveButtonClick = function () {
     let rating = parseInt($('#rating').val());
     let expanded = false;
 
-    let newBookmark = {title,url,desc,rating,expanded};
+    let newBookmark = {title, url, desc, rating, expanded};
+
+    clearUIError();
 
     api.createBookmark(newBookmark)
       .then( (data) => {
         store.addBookmark(data);
         render(generateMainView);
+      }).catch((err) => {
+        showUIError(err.message);
       });
   });
 
@@ -266,10 +293,14 @@ const bindEventListeners = function () {
   handleDeleteButtonClick();
   handleCancelButtonClick();
   handleSaveButtonClick();
+  showUIError();
+  clearUIError();
 };
 
 export {
   generateMainView,
   bindEventListeners,
-  render
+  render,
+  showUIError,
+  clearUIError,
 };
