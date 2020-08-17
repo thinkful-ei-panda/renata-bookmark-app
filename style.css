@@ -163,6 +163,11 @@ a{
   margin-top: 40px;
 }
 
+.required{
+  font-size: 15px;
+  text-align: center;
+}
+
 /* +++++++++++++++ MEDIUM & BIG MEDIAS +++++++++++++++++++ */
 @media all and (min-width: 600px) {
 

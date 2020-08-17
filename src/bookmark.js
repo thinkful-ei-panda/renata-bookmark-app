@@ -92,11 +92,11 @@ const generateCreateView = function () {
       <h2>Create a new bookmark</h2>
       <form id="create-form" action="" method="post">
         <div class="form-field">
-          <label for="title">Title:</label>
+          <label for="title">Title: *</label>
           <input type="text" name="title" id="title" required>
         </div>      
         <div class="form-field">
-          <label for="url">URL:</label>
+          <label for="url">URL: *</label>
           <input type="url" name="url" id="url" value="https://" required>
         </div>
         <div class="form-field">
@@ -104,7 +104,7 @@ const generateCreateView = function () {
           <textarea name="description" id="description" placeholder="(optional)"></textarea>
         </div>
         <div class="form-field">
-          <label for="rating">Rating:</label>
+          <label for="rating">Rating: *</label>
           <select name="rating" id="rating" required>      
           <option value="0"></option>
           <option value="1">★☆☆☆☆</option>
@@ -113,6 +113,9 @@ const generateCreateView = function () {
           <option value="4">★★★★☆</option>
           <option value="5">★★★★★</option>
           </select>
+        </div>
+        <div>
+        <p class='required'>All the fields with * are required</p>
         </div>
         <div class="form-field">
           <button class="delete-button" type="image" id="cancel-button" alt="Cancel Button" formnovalidate>Cancel</button>

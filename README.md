@@ -1,7 +1,23 @@
-API: [Here](https://thinkful-list-API.herokuapp.com/renata/bookmarks)
 # Bookmark App made by Renata.
 
+## Links
+* API: [Here](https://thinkful-list-API.herokuapp.com/renata/bookmarks)
+* Repo: [Github - Bookmark App](https://github.com/thinkful-ei-panda/renata-bookmark-app)
+* Live: [Bookmark App](https://thinkful-ei-panda.github.io/renata-bookmark-app/)
+* Gist: [Gist - Bookmark App](https://gist.github.com/Seraphyne/fb17b0484af9f3de60a67d3f2a018e60)
+
 ### As a user:
+
+- [x] Add bookmarks to my list. 
+- [x] Bookmarks contain:
+  - [x] Title, URL link, Description, Rating (1-5 stars).
+  - [x] See a list of my bookmarks when I first open the app.
+- [x] All bookmarks in the list default to a "condensed" view showing only title and rating. I can click on a bookmark to display the full detailed view.
+- [x] Detailed view expands to additionally display description and a "Visit Site" link. Also, I can remove bookmarks from my bookmark list.
+- [x] Receive appropriate feedback when I cannot submit a bookmark
+- [x] Check all validations in the API documentation (e.g. title and url field required). I can select from a dropdown a "minimum rating" to filter the list by all bookmarks rated at or above the chosen selection. 
+
+### Requirements for the app:
 - [x] Add bookmarks to my bookmark list. Bookmarks contain:
   - [x] title
   - [x] url link
@@ -35,13 +51,6 @@ API: [Here](https://thinkful-list-API.herokuapp.com/renata/bookmarks)
 - [x] greybox
 - [x] wireframes
 - [x] flow chart
-
-## Links
-
-* Repo: [Github - Bookmark App](https://github.com/thinkful-ei-panda/renata-bookmark-app)
-* Live: [Bookmark App](https://thinkful-ei-panda.github.io/renata-bookmark-app/)
-* Gist: [Gist - Bookmark App](https://gist.github.com/Seraphyne/fb17b0484af9f3de60a67d3f2a018e60)
-
 
 ## Screenshot
 
