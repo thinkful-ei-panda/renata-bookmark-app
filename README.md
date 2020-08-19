@@ -54,7 +54,7 @@
 
 ## Screenshot
 
-![Landing Page](./images/first-loading.jpg)
-![Details](./images/details.jpg)
-![Create a bookmark](./images/create-bkm.jpg)
+![Landing Page](./images/bkm.jpg)
+![Details](./images/open-bkm.jpg)
+![Create a bookmark](./images/add-bkm.jpg)
 
